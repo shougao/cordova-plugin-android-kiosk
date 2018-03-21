@@ -1,10 +1,10 @@
 var exec = require('cordova/exec');
 
-exports.lockLauncher = function(enabled) {
-    exec(null, null, 'Kiosk', 'lockLauncher', [!!enabled]);
+exports.lockLauncher = function(enabled, success, error) {
+    exec(null, error, 'Kiosk', 'lockLauncher', [!!enabled]);
 };
 
-exports.isLocked = function() {
+exports.isLocked = function(arg0, success, error) {
     exec(success, null, 'Kiosk', 'isLocked', null);
 };
 

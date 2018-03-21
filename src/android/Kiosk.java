@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
 import org.apache.cordova.CallbackContext;
 
 import org.apache.cordova.CordovaWebView;
@@ -26,9 +27,11 @@ public class Kiosk extends CordovaPlugin {
 
     private DevicePolicyManager mDpm;
     private boolean mIsKioskEnabled;
+    private CallbackContext mCallbackContext;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        mCallbackContext = callbackContext;
         if (action.equals("lockLauncher")) {
             Boolean locked = args.getBoolean(0);
             lockLauncher(locked);
@@ -91,12 +94,12 @@ public class Kiosk extends CordovaPlugin {
             mDpm = (DevicePolicyManager) cordova.getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
             ComponentName deviceAdmin = new ComponentName(cordova.getActivity(), MyAdmin.class);
             if (!mDpm.isAdminActive(deviceAdmin)) {
-                Toast.makeText(cordova.getActivity(), "not admin active", Toast.LENGTH_SHORT).show();
+                callbackMessage(false, "not admin active");
             }
             if (mDpm.isDeviceOwnerApp(cordova.getActivity().getPackageName())) {
                 mDpm.setLockTaskPackages(deviceAdmin, new String[]{cordova.getActivity().getPackageName()});
             } else {
-                Toast.makeText(cordova.getActivity(), "not device owner app", Toast.LENGTH_SHORT).show();
+                callbackMessage(false, "not device owner app");
             }
             enableKioskMode(true);
         } else if(!locked){
@@ -111,18 +114,36 @@ public class Kiosk extends CordovaPlugin {
                     cordova.getActivity().startLockTask();
                     mIsKioskEnabled = true;
                 } else {
-                    Toast.makeText(cordova.getActivity(), "no permission to lock", Toast.LENGTH_SHORT).show();
+                    callbackMessage(false, "no permission to lock");
                 }
             } else {
                 cordova.getActivity().stopLockTask();
                 mIsKioskEnabled = false;
             }
         } catch (Exception e) {
+            callbackMessage(false, "android lock task exception");
             e.printStackTrace();
         }
     }
 
     private void deleteDeviceAdmin(){
         mDpm.clearDeviceOwnerApp(cordova.getActivity().getPackageName());
+    }
+
+
+    private void callbackMessage(boolean success, String message) {
+        if (mCallbackContext == null) {
+            return;
+        }
+        if(success){
+            PluginResult dataResult = new PluginResult(PluginResult.Status.OK, message);
+            dataResult.setKeepCallback(true);
+            mCallbackContext.sendPluginResult(dataResult);
+        } else {
+            PluginResult dataResult = new PluginResult(PluginResult.Status.ERROR, message);
+            dataResult.setKeepCallback(true);
+            mCallbackContext.sendPluginResult(dataResult);
+        }
+        mCallbackContext = null;
     }
 }

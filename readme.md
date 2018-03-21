@@ -13,14 +13,14 @@ cordova plugin add cordova-plugin-android-kiosk
 lock or unlock the app to Single Pourse device
 ```
 function success(message){
-    console.log("progress = " + message);
+    console.log("success");
 }
 
 function error(message){
     console.log("error: reason is " + message);
 }
 
-Kiosk.lock(success, error, enable);
+Kiosk.lock(success, error, boolean enable); // the boolean parameter is enable or disable this mode.
 ```
 check the current lock state.
 ```
@@ -40,16 +40,25 @@ you have to set you app to the device owner forllow google AOSP design.
 ```
 adb shell dpm set-device-owner com.example.template/.kiosk.plugin.MyAdmin
 ```
-the setting will sotren at /data/system/device_policy.xml(before android 6.0)
-/data/system/device_policy_2.xml(> android 6.0)
+the setting will sotren at ``/data/system/device_policy.xml``(before android 6.0)
+``/data/system/device_policy_2.xml``(> android 6.0)
 
 First, create a file device_owner.xml with following content:
 ```
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <root>
-    <device-owner package="com.myDomain.myPackage" name="" component="com.myDomain.myPackage/com.myDomain.myPackage.myComponent" userRestrictionsMigrated="true" />
+    <device-owner package="com.myDomain.myPackage" name="" component="com.example.template/com.example.template.kiosk.plugin.MyAdmin" userRestrictionsMigrated="true" />
+</root>
+```
+on android 8.0
+```
+/data/system # cat device_owner_2.xml
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<root>
+<device-owner package="com.example.template" name="" component="com.example.template/com.example.template.kiosk.plugin.MyAdmin" userRestrictionsMigrated="true" />
+<device-owner-context userId="0" />
 </root>
 ```
 chown system:system device_owner.xml
 
-the source and target tag in plugin.xml is sutable for my project, the package name is ``com.example.template``, if your project name is different, please using your pakcage name instand of it.
+the cordova plugin source and target tag in plugin.xml is sutable for my project, the package name is ``com.example.template``, if your project name is different, please using your pakcage name instand of it.
