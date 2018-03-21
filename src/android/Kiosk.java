@@ -1,4 +1,4 @@
-package com.mycompany.kiosk.plugin;
+package com.example.template.kiosk.plugin;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;

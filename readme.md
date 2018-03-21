@@ -38,10 +38,18 @@ Kiosk.switchLauncher();
 
 you have to set you app to the device owner forllow google AOSP design.
 ```
-adb shell
-dpm set-device-owner com.mycompany.kiosk.plugin/.MyAdmin
+adb shell dpm set-device-owner com.example.template/.kiosk.plugin.MyAdmin
 ```
 the setting will sotren at /data/system/device_policy.xml(before android 6.0)
 /data/system/device_policy_2.xml(> android 6.0)
 
-the source and target tag in plugin.xml is sutable for my project, if your structe is different, please update your plugin.xml
+First, create a file device_owner.xml with following content:
+```
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<root>
+    <device-owner package="com.myDomain.myPackage" name="" component="com.myDomain.myPackage/com.myDomain.myPackage.myComponent" userRestrictionsMigrated="true" />
+</root>
+```
+chown system:system device_owner.xml
+
+the source and target tag in plugin.xml is sutable for my project, the package name is ``com.example.template``, if your project name is different, please using your pakcage name instand of it.

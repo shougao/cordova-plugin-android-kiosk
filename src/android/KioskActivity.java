@@ -1,4 +1,4 @@
-package com.mycompany.kiosk.plugin;
+package com.example.template.kiosk.plugin;
 
 import android.app.Activity;
 import android.app.ActivityManager;

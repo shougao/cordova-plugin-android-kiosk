@@ -1,9 +1,9 @@
 {
   "name": "cordova-plugin-android-kiosk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "setup single-use (COSU) devices for android",
   "cordova": {
-    "id": "com.mycompany.kiosk.plugin",
+    "id": "cordova-plugin-android-kiosk",
     "platforms": [
       "android"
     ]

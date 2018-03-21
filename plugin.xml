@@ -1,20 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.mycompany.kiosk.plugin" version="0.0.1" 
+<plugin id="cordova-plugin-android-kiosk" version="0.0.1" 
     xmlns="http://apache.org/cordova/ns/plugins/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Kiosk</name>
+
     <js-module name="Kiosk" src="www/Kiosk.js">
         <clobbers target="Kiosk" />
     </js-module>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="Kiosk">
-                <param name="android-package" value="com.mycompany.kiosk.plugin.Kiosk" />
+                <param name="android-package" value="com.example.template.kiosk.plugin.Kiosk" />
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml"></config-file>
         <edit-config file="AndroidManifest.xml" target="/manifest/application/activity[@android:label='@string/activity_name']" mode="merge">
-            <activity android:name="com.mycompany.kiosk.plugin.KioskActivity" android:keepScreenOn="true" android:theme="@android:style/Theme.DeviceDefault.NoActionBar"></activity>
+            <activity android:name="com.example.template.kiosk.plugin.KioskActivity" android:keepScreenOn="true" android:theme="@android:style/Theme.DeviceDefault.NoActionBar"></activity>
         </edit-config>
         <config-file target="AndroidManifest.xml" parent="/manifest/application/activity[@android:label='@string/activity_name']">
             <intent-filter>
@@ -27,13 +28,13 @@
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <!-- autorun after the app APK is updated -->
-            <receiver android:name="com.mycompany.kiosk.plugin.MyPackageReplacedEventReceiver">
+            <receiver android:name="com.example.template.kiosk.plugin.MyPackageReplacedEventReceiver">
                 <intent-filter>
                     <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                     <action android:name="android.intent.action.BOOT_COMPLETED" />
                 </intent-filter>
             </receiver>
-            <receiver android:name="com.mycompany.kiosk.plugin.MyAdmin" android:label="@string/app_name"  android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <receiver android:name="com.example.template.kiosk.plugin.MyAdmin" android:label="@string/app_name"  android:permission="android.permission.BIND_DEVICE_ADMIN">
                 <meta-data android:name="android.app.device_admin" android:resource="@xml/my_admin" />
                 <intent-filter>
                     <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -45,11 +46,11 @@
             <uses-permission android:name="com.samsung.accessory.permission.ACCESSORY_FRAMEWORK" />
             <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
         </config-file>
-        
-        <source-file src="src/android/KioskActivity.java" target-dir="src/com/mycompany/kiosk/plugin" />
-        <source-file src="src/android/Kiosk.java" target-dir="src/com/mycompany/kiosk/plugin" />
-        <source-file src="src/android/MyPackageReplacedEventReceiver.java" target-dir="src/com/mycompany/kiosk/plugin" />
-        <source-file src="src/android/MyAdmin.java" target-dir="src/com/mycompany/kiosk/plugin" />
+
+        <source-file src="src/android/KioskActivity.java" target-dir="src/com/example/template/kiosk/plugin" />
+        <source-file src="src/android/Kiosk.java" target-dir="src/com/example/template/kiosk/plugin" />
+        <source-file src="src/android/MyPackageReplacedEventReceiver.java" target-dir="src/com/example/template/kiosk/plugin" />
+        <source-file src="src/android/MyAdmin.java" target-dir="src/com/example/template/kiosk/plugin" />
         <source-file src="src/android/xml/my_admin.xml" target-dir="res/xml/" />
     </platform>
 </plugin>
