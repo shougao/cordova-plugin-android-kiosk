@@ -42,7 +42,7 @@ public class Kiosk extends CordovaPlugin {
         } else if (action.equals("switchLauncher")) {
             switchLauncher(callbackContext);
             return true;
-        } else if (action.equals("deleteDeviceAdmin")){
+        } else if (action.equals("deleteDeviceAdmin")) {
             deleteDeviceAdmin();
         }
         return false;
@@ -52,6 +52,10 @@ public class Kiosk extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         lockLauncher(true);
+        enterFullscreen();
+    }
+
+    private void enterFullscreen() {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -72,6 +76,19 @@ public class Kiosk extends CordovaPlugin {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        mDecorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                cordova.getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            }
+        });
     }
 
     private void switchLauncher(CallbackContext callbackContext) {
@@ -102,7 +119,7 @@ public class Kiosk extends CordovaPlugin {
                 callbackMessage(false, "not device owner app");
             }
             enableKioskMode(true);
-        } else if(!locked){
+        } else if (!locked) {
             enableKioskMode(false);
         }
     }
@@ -126,7 +143,7 @@ public class Kiosk extends CordovaPlugin {
         }
     }
 
-    private void deleteDeviceAdmin(){
+    private void deleteDeviceAdmin() {
         mDpm.clearDeviceOwnerApp(cordova.getActivity().getPackageName());
     }
 
@@ -135,7 +152,7 @@ public class Kiosk extends CordovaPlugin {
         if (mCallbackContext == null) {
             return;
         }
-        if(success){
+        if (success) {
             PluginResult dataResult = new PluginResult(PluginResult.Status.OK, message);
             dataResult.setKeepCallback(true);
             mCallbackContext.sendPluginResult(dataResult);
