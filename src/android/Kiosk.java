@@ -49,6 +49,12 @@ public class Kiosk extends CordovaPlugin {
     }
 
     @Override
+    public void onResume(boolean multitasking) {
+        super.onResume(multitasking);
+        hideSystemUI();
+    }
+
+    @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         lockLauncher(true);
