@@ -51,7 +51,7 @@ public class Kiosk extends CordovaPlugin {
     @Override
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
-        hideSystemUI();
+//        hideSystemUI();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Kiosk extends CordovaPlugin {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                hideSystemUI();
+//                hideSystemUI();
             }
         });
     }
